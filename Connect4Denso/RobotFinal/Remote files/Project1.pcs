@@ -1,0 +1,12 @@
+'!TITLE "Project1"
+
+Sub Main
+	TakeArm Keep = 0
+move p, p1
+draw l, (0,0,-20)
+move p, p1	
+move p, p2
+draw l, (0,0,-20)
+move p, p2
+move p, p1	
+End Sub

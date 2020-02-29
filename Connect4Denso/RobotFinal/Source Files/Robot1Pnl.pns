@@ -1,0 +1,105 @@
+#include <PanelMain.h> raw
+
+#Define bit1 IO[10]
+#Define bit2 IO[11]
+#Define bit3 IO[12]
+#Define runStatus IO[25]
+#Define gripper IO[26]
+#Define robot1Status IO[27]
+#Define robot2Status IO[13]
+#Define DetectedColor I[0]
+#Define PiecesRemaining I[1]
+
+Sub updateInterval_TIMER()
+	Dim runState As Integer
+	runState = bit1
+	Dim temp As Integer
+	temp = bit2
+	temp = temp << 1
+	runState = runState or temp
+	temp = bit3
+	temp = temp << 2
+	runState = runState or temp
+	nbRunMode.value = runState
+	ipbLockout.state = runStatus
+	ipbGripper.state = gripper
+	ipbRob1.state = robot1Status
+	ipbRob2.state = robot2Status
+	nbPieces.value = PiecesRemaining
+	If DetectedColor == 0 Then
+		tbColor.text = "Empty"
+	ElseIf DetectedColor == 1 Then
+		tbColor.text = "Red"
+	ElseIf DetectedColor == 2 Then
+		tbColor.text = "Grey"
+	Else
+		tbColor.text = "NA"
+	End If
+End Sub
+
+Sub nbPieces_DONE()
+	PiecesRemaining = nbPieces.value
+End Sub
+
+Sub ipbLockout_CLICKED()
+	If runStatus == 0 Then
+		Set runStatus
+	Else
+		Reset runStatus
+	End If
+End Sub
+
+Sub ipbGripper_CLICKED()
+	If gripper == 0 Then
+		Set gripper
+	Else
+		Reset gripper
+	End If
+End Sub
+
+Sub ipbRob1_CLICKED()
+	If robot1Status == 0 Then
+		Set robot1Status
+	Else
+		Reset robot1Status
+	End If
+End Sub
+
+'Sub ipbRob2_CLICKED()
+'	If robot2Status == 0 Then
+'		Set robot2Status
+'	Else
+'		Reset robot2Status
+'	End If
+'End Sub
+#ifdef TP_DESIGNER
+'<<--TPDESIGNER_RESERVED-->>
+CAPTION=""
+BG=&H754E3A
+FG=&H000000
+TIMEOUT=2000
+TIMEOUTMODE=1
+RELEASEMODE=0
+PNLCCVER=232
+COLORTYPE=1
+FONTTYPE=1
+BORDERSTYLE=0
+CONTROLSORT=0
+add_widget 9,"Group1",360,20,260,330,&H000000,&HB0B0B0,0,1,0,"Game Stats",16,0,1,0,"Segoe UI";
+add_widget 2,"Label1",370,40,200,30,&H000000,&HB0B0B0,0,1,0,"runMode:",16,1,"Segoe UI","",1,1;
+add_widget 2,"Label2",370,80,200,30,&H000000,&HB0B0B0,0,1,0,"Lockout:",16,1,"Segoe UI","",1,1;
+add_widget 2,"Label3",370,120,200,30,&H000000,&HB0B0B0,0,1,0,"Gripper:",16,1,"Segoe UI","",1,1;
+add_widget 2,"Label4",370,160,200,30,&H000000,&HB0B0B0,0,1,0,"Robot1:",16,1,"Segoe UI","",1,1;
+add_widget 2,"Label5",370,200,200,30,&H000000,&HB0B0B0,0,1,0,"Robot2:",16,1,"Segoe UI","",1,1;
+add_widget 2,"Label6",370,240,200,30,&H000000,&HB0B0B0,0,1,0,"Pieces Remaining:",16,1,"Segoe UI","",1,1;
+add_widget 2,"Label7",370,280,200,30,&H000000,&HB0B0B0,0,1,0,"Detected Color:",16,1,"Segoe UI","",1,1;
+add_widget 5,"nbRunMode",570,40,40,30,&H000000,&HB0B0B0,0,3,0,"NB1",16,0,0,"Segoe UI";
+add_widget 5,"nbPieces",570,240,40,30,&H000000,&HB0B0B0,0,3,0,"NB1",16,0,0,"Segoe UI";
+add_widget 8,"tbColor",550,280,60,30,&H000000,&HB0B0B0,0,3,0,"TB1",16,0,"TB1","Segoe UI";
+add_widget 15,"updateInterval",10,320,0,1,1000;
+add_widget 17,"ipbLockout",580,80,30,30,&H00FF00,&H000000,0,3,1,"",16,0,1,"Segoe UI";
+add_widget 17,"ipbGripper",580,120,30,30,&H00FF00,&H000000,0,3,1,"",16,0,1,"Segoe UI";
+add_widget 17,"ipbRob1",580,160,30,30,&H00FF00,&H000000,0,3,1,"",16,0,1,"Segoe UI";
+add_widget 17,"ipbRob2",580,200,30,30,&H00FF00,&H000000,0,3,1,"",16,0,1,"Segoe UI";
+'<<--TPDESIGNER_RESERVED-->>
+#endif

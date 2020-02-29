@@ -1,0 +1,13 @@
+'!TITLE "Denso robot program"
+
+Sub Main
+	TakeArm Keep = 0
+	
+	Do While 1
+		If IO[9] == 1 Then
+			Do While IO[9] == 1
+			Loop 
+		I[32] = I[32] + 1
+		End If
+	Loop
+End Sub

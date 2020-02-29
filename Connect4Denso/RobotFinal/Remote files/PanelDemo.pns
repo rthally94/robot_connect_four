@@ -1,0 +1,37 @@
+#include <PanelMain.h> raw
+
+
+
+Sub GRPOpen_CLICKED()
+ Set IO[26]
+PL1.State = IO[26]
+End Sub
+
+
+Sub GRPClose_CLICKED()
+ Reset IO[26]
+ PL1.State = IO[26]
+End Sub
+
+
+
+
+#ifdef TP_DESIGNER
+'<<--TPDESIGNER_RESERVED-->>
+CAPTION=""
+BG=&H754E3A
+FG=&H000000
+TIMEOUT=2000
+TIMEOUTMODE=1
+RELEASEMODE=0
+PNLCCVER=232
+COLORTYPE=1
+FONTTYPE=1
+BORDERSTYLE=0
+CONTROLSORT=0
+add_widget 1,"GRPOpen",170,70,130,70,&H000000,&HB0B0B0,0,3,1,"GRP Open",16,0,0,"Segoe UI","",1,1;
+add_widget 1,"GRPClose",320,70,130,70,&H000000,&HB0B0B0,0,3,1,"GRP Close",16,0,0,"Segoe UI","",1,1;
+add_widget 15,"Timer1",380,200,0,1,1000;
+add_widget 3,"PL1",270,190,70,60,&H00FF00,&H000000,0,1,2,"PL1",16,0,1,"Segoe UI";
+'<<--TPDESIGNER_RESERVED-->>
+#endif

@@ -1,0 +1,187 @@
+'!TITLE "Denso robot program"
+DEFIO runMode = Byte, 10, &B00000111
+DEFIO runStatus = Bit, 25
+DEFIO gripper = Bit, 26
+DEFIO robot1Status = Bit, 27
+DEFIO robot2Status = Bit, 13
+
+DIM currentMode As Integer
+#Define DetectedColor I0
+#Define PiecesRemaining I1
+#Define PieceHeight 7.2
+#Define ApproachDistance 25
+#Define ApproachSpeed s=25
+Dim greyCount As Integer = -1
+
+Sub Main
+	TakeArm Keep = 0
+	ChangeTool 1
+	PiecesRemaining = -1
+	Reset robot1Status
+	Reset runStatus
+	Reset gripper
+	Motor on
+	do
+		Delay 20
+		Select Case runMode
+			Case 0
+					
+			Case 1
+				Speed 5
+				GoHome
+				Reset runStatus
+				Delay 500
+				Reset Gripper
+				Speed 100
+			Case 2
+				Sort
+				Reset runStatus
+				Delay 500
+			Case 3
+				GreyStack
+				Reset runStatus
+				Delay 500
+			Case 4
+				Call GoGame(P4)
+				Reset runStatus
+				Delay 500
+			Case 5
+				Call GoGame(P5)
+				Reset runStatus
+				Delay 500
+			Case 6
+				Call GoGame(P6)
+				Reset runStatus
+				Delay 500
+			Case 7
+				Call GoGame(P7)
+				Reset runStatus
+				Delay 500
+		End Select
+	loop
+End Sub
+
+Sub GoHome
+	SET runStatus
+	Depart P, 25
+	Move P, @P P1
+End Sub
+
+Sub GoGame(ByVal loc As Position)
+	SET runStatus
+	IF piecesRemaining >= 0 THEN
+		Pick
+		Move P, @P P1
+		Approach P, loc, ApproachDistance
+		Call Place(loc)
+		GoHome
+	END IF
+End Sub
+
+Sub Pick
+	SET runStatus
+	DIM pos As Position
+	pos = Dev(P10, P(0,0,piecesRemaining * PieceHeight,0,0,-1))
+	Approach P, pos, ApproachDistance
+	Move L, pos, ApproachSpeed
+	delay 100
+	SET gripper
+	delay 100
+	Depart L, ApproachDistance, ApproachSpeed
+	PiecesRemaining = PiecesRemaining - 1
+End Sub
+
+Sub Place(ByVal loc As Position)
+	move L, loc, s = 10
+	delay 100
+	Reset gripper
+	delay 100
+	Depart L, ApproachDistance, ApproachSpeed
+End Sub
+
+Sub Sort
+	Dim startTime As Integer
+	Dim waitTime As Integer = 20000
+	startTime = Timer
+	DIM pos As Position
+	DIM waitStatus As Integer
+	Set robot1Status
+	Delay 1000
+	Do While (greyCount < 7 or piecesRemaining < 7) and Timer - startTime < waitTime
+		Delay 20
+		IF DetectedColor <> 0 Then
+			startTime = Timer
+			DIM PieceColor As Integer
+			PieceColor = DetectedColor
+			Set runStatus
+			Delay 500
+			Approach P, P15, ApproachDistance
+			Move L, P15, ApproachSpeed
+			delay 100
+			SET gripper
+			delay 100
+			Depart L, ApproachDistance, ApproachSpeed
+			Reset runStatus
+			If PieceColor == 1 Then
+				piecesRemaining = piecesRemaining + 1
+				pos = Dev(P10, P(0,0,piecesRemaining * PieceHeight,0,0,-1))
+			End If
+		
+			If PieceColor == 2 Then
+				greyCount = greyCount + 1
+				pos = Dev(P11, P(0,0,greyCount * PieceHeight,0,0,-1))
+			End If
+
+			Move P, @P P1
+			Approach P, pos, ApproachDistance
+			Move L, pos, ApproachSpeed
+			delay 100
+			Reset gripper
+			delay 100
+			Depart L, ApproachDistance, ApproachSpeed
+			Move P, P1
+			startTime = Timer
+			delay(100)
+		End If
+		Delay 20
+	Loop
+	delay 20
+	reset Robot1Status
+End Sub
+
+Sub GreyStack
+	Dim WaitStatus As Integer
+	Dim PosB As Position
+	Set runStatus
+	Do While greyCount >= 0
+		posB = Dev(P11, P(0,0,greyCount * PieceHeight,0,0,-1))
+		greyCount = greyCount - 1
+		Approach P, posB, ApproachDistance
+		Move L, posB, ApproachSpeed
+		delay 100
+		Set Gripper
+		delay 100
+		Depart L, ApproachDistance, ApproachSpeed
+
+		Move P, @p p1
+		Move P, @e p17
+		delay 100
+		Wait robot2Status == 1, 20000, WaitStatus
+
+		If WaitStatus == 1 Then
+			Delay 250
+			Reset Gripper
+			Set robot1Status
+			Delay 100
+			Move P, @p p1
+			Reset robot1Status
+		Else
+			Move P, @p p1
+			Delay 100
+			Reset gripper
+			Reset robot1Status
+			Delay 5000
+			Exit Do
+		End If
+	loop
+End Sub

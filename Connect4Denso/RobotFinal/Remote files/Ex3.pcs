@@ -1,0 +1,54 @@
+'!TITLE "EX3"
+
+#Define Home P[30]
+#Define Pickup P[31]
+#Define Place P[32]
+
+DEFIO Grip = BIT, 26
+
+Sub Main
+
+	TakeArm Keep = 0
+
+Buzzer 2000
+
+Move p, home
+
+RESET grip
+
+Approach P, Pickup, 50
+Move L, Pickup, s=50
+SET grip
+Delay 250
+Depart L, 20
+
+Approach P, Place, 50
+Move L, Place, s=50
+RESET grip
+Delay 250
+Depart L, 20
+
+Move P, Home
+
+RESET grip
+
+Approach P, Place, 50
+Move L, Place, s=50
+SET grip
+Delay 250
+Depart L, 20
+
+Approach P, Pickup, 50
+Move L, Pickup, s=50
+RESET grip
+Delay 250
+Depart L, 20
+
+Move P, Home
+
+HOLD "Operation complete! Run again?"
+
+
+	
+	
+End Sub

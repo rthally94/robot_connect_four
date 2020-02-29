@@ -1,0 +1,33 @@
+'!TITLE "Denso robot program"
+
+Dim TargetPosition As Position
+Dim Location As Integer = 0
+Sub Main
+	TakeArm Keep = 0
+	
+	Do
+		If I15 < 60 Then
+			If Location = 0 Then
+				TargetPosition = P40
+				Location = 1
+			Else
+				TargetPosition = P41
+				Location = 0
+			End If
+
+		ElseIf I15 > 70 Then
+			If Location = 0 Then
+				TargetPosition = P42
+				Location = 1
+			Else
+				TargetPosition = P43
+				Location = 0
+			End If
+
+		Else
+			TargetPosition = P6
+		End If
+		Move P, @P TargetPosition
+	Loop
+
+End Sub

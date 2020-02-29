@@ -1,0 +1,39 @@
+'!TITLE "Pick and Place"
+
+#define p_pickup 1
+#define p_pick_prep 2
+#define p_home 3
+#define p_dropoff 4
+Dim Counter as Integer = 0
+
+
+Sub Main
+DO
+	TAKEARM KEEP = 1
+	Speed 80
+
+IF IO [10]=1 then
+	MOVE L, P3
+	DELAY 500
+	Set IO[26]
+	DELAY 250
+	Move L, P2
+	Move L, P1
+	Reset IO[26]
+	DELAY 2000
+	Move L, P2
+	Move L, P3
+	Move P, P5
+	Move L, P4
+	Set IO[26]
+	Delay 1500
+	Move P, P4
+	Move L, P5
+Elseif IO[10]=0 Then
+	MOVE L, P3
+	Delay 5000
+
+End IF
+loop until Counter = 200
+End Sub
+

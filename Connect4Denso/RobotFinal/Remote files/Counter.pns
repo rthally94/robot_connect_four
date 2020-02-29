@@ -1,0 +1,27 @@
+#include <PanelMain.h> raw
+
+Sub PartsLblUpdateTimer_TIMER()
+	PartsLbl.Caption = "Part Count: " & I[32]
+End Sub
+
+Sub MainPnlBtn_CLICKED()
+	PageChange Main
+End Sub
+#ifdef TP_DESIGNER
+'<<--TPDESIGNER_RESERVED-->>
+CAPTION=""
+BG=&H754E3A
+FG=&H000000
+TIMEOUT=2000
+TIMEOUTMODE=1
+RELEASEMODE=0
+PNLCCVER=232
+COLORTYPE=1
+FONTTYPE=1
+BORDERSTYLE=0
+CONTROLSORT=0
+add_widget 15,"PartsLblUpdateTimer",20,100,0,1,500;
+add_widget 1,"MainPnlBtn",20,10,90,30,&H000000,&HB0B0B0,0,3,1,"<- Main",16,0,0,"Segoe UI","",1,1;
+add_widget 2,"PartsLbl",20,60,200,30,&H000000,&HB0B0B0,0,1,0,"Part Count: 0",16,2,"Segoe UI","",1,1;
+'<<--TPDESIGNER_RESERVED-->>
+#endif

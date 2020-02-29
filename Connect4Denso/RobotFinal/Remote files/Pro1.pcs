@@ -1,0 +1,80 @@
+'!TITLE "Palletizing Template"
+#Define PLT_ROWS 3 ' Number of side partitions
+#Define PLT_COLS 3 ' Number of lengthwise partitions
+#Define PLT_HEIGHT 20 ' Pallet height
+#Define PLT_APR_LEN 35 ' Approach length
+#Define PLT_DEP_LEN 30 ' Depart length
+#Define PLT_LAYER 2 ' Number of layers
+#Define PLT_P1 20 ' Pallet position
+#Define PLT_P2 21 '
+#Define PLT_P3 22 '
+#Define PLT_P4 23 '
+#Define PLT_POS 24 ' Palletizing position
+
+#Define PLT_COUNTER 0 ' Palletizing Counter
+#Define PLT_LAYER_COUNTER 1 ' Layer Counter
+
+'           COLS
+'      P[22]------P[23]
+' ROWS /            / |
+'   P[20]-------P[21]|
+'   |            | /
+'    -------------/
+
+#Define HOME J(0, 0, 90, 0, 0, 0)
+
+Sub Main()
+	
+	Setup
+	
+	GetNextPiece
+	Paletize
+	
+End Sub
+
+Sub Setup()
+	TakeArm Keep = 0
+	Speed 100
+	Tool 1, P(0, 0, 141, 0, 0, 0)
+	ChangeTool 1
+	MOVE P, HOME
+End Sub
+
+Sub GetNextPiece()
+	Approach P, P19, PLT_APR_LEN
+	Move L, P19, S = 80
+	SET IO26
+	Depart L, PLT_DEP_LEN, S = 80
+End Sub
+
+Sub Paletize()
+
+	'Obtain the destination to P[24]
+	P[PLT_POS] = Pallet.CalcPos(PLT_ROWS, PLT_COLS, PLT_HEIGHT, P[PLT_P1], P[PLT_P2], P[PLT_P3], P[PLT_P4], I[PLT_COUNTER], I[PLT_LAYER_COUNTER] )
+	
+	'------- Palletizing -------------------------
+	Approach P, P[PLT_POS], @0 PLT_APR_LEN, S = 100                                                                                                'Approach at a height of 50mm of P[24]
+	
+	' --- Wait IO ---
+	
+	Move L, @0 P[PLT_POS], S = 80                                                                                                                 ' Move to P[19]
+	
+	' --- Chuck or UnChuck ---
+	RESET IO26	
+
+	Depart L, PLT_DEP_LEN, S = 80                                                                                                                 ' Deaprt at a height of 50mm
+	
+	' --- Move the robot ---
+	
+	'------- Increase the counters --------------
+	I[PLT_COUNTER] = I[PLT_COUNTER] + 1                                                                                                            ' Increase the palletizing counter
+	If I[PLT_COUNTER] > (PLT_ROWS * PLT_COLS) Then                                                                                                 ' If complete a layer(Row1 * Col1)...
+		I[PLT_COUNTER] = 1                                                                                                                         ' Initialize the palletizing counter
+		
+		I[PLT_LAYER_COUNTER] = I[PLT_LAYER_COUNTER] + 1                                                                                            ' Increase the counter of the layer
+		If I[PLT_LAYER_COUNTER] > PLT_LAYER Then                                                                                                   ' If complete all layers
+			I[PLT_LAYER_COUNTER] = 1                                                                                                               ' Initialize the counter of the layer
+		End If
+	End If
+
+End Sub

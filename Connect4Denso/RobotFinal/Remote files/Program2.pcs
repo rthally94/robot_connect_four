@@ -1,0 +1,36 @@
+'!TITLE "Denso robot program"
+	DefIO Grip = BIT, 26
+	#Define Home P[0]	
+	#Define Pick P(260.1771, -230.9208, 153.8353, -179.6526, -0.6290201, -4.155558,13)
+	#Define Place P[2]
+Sub Main
+	TakeArm Keep = 0
+Speed 100
+	Buzzer 2000
+	Move P, Home
+	Reset Grip
+	Approach P, Pick, 50
+	Move L, Pick, S=50 
+	Set Grip
+	Delay 500
+	Depart L, 20
+	Approach P, Place, 50
+	Move L, Place, Speed=50
+	Reset Grip
+	Delay 500
+	Depart L, 20
+	Move P, Home
+	Approach P, Place, 50
+	Move L, Place, Speed=50
+	Set Grip
+	Delay 500
+	Depart L, 20
+	Approach P, Pick, 50
+	Move L, Pick, Speed=50
+	Reset Grip
+	Delay 500
+	Depart L, 20
+	Move P, Home
+	Hold "Operation complete! Run again?"
+End Sub
+

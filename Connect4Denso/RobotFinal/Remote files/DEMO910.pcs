@@ -1,0 +1,11 @@
+'!TITLE "DEMO910"
+
+Sub Main 
+	TakeArm  Keep = 0
+move p, p80
+reset io26
+move p, p81
+
+End Sub
+
+

@@ -1,0 +1,14 @@
+'!TITLE "Denso robot program"
+#Define OpticalCount I[90]
+#Define Optical1 IO[9]
+Sub Main
+	TakeArm Keep = 0
+Do	
+	If Optical1 = 1 then
+	OpticalCount=OpticalCount+1
+	Delay 1000
+	else
+	Delay 1000
+	end if
+Loop
+End Sub

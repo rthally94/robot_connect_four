@@ -1,0 +1,51 @@
+'!TITLE "Palletizing"
+
+	#Define Home P(311.49,89.32,411.88,-177.02,4.1,-127.9,5)
+	#Define Side1 P1
+	#Define Place P2
+	DefIO Grip = BIT, 26
+	Dim Offset
+	Dim Counter
+
+Sub Main
+	TakeArm Keep = 0
+
+	Tool 3,P(0,0,125,0,0,0)					'set tool
+
+	Move P, Home							'begin
+	reset Grip
+
+	Approach P, Side1, 50					'get block
+	Move L, Side1, s=50
+	set Grip
+	delay 200
+	Depart L, 20
+	
+	Approach P, Place,50					'set block
+	Move L, Place, s=50
+	reset Grip
+	delay 200
+
+	Move P, Home							'return home
+
+
+
+
+
+
+
+	Approach P, Place, 50					'get block
+	Move L, Side1, s=50
+	reset Grip
+	delay 200
+	set Grip
+	Depart L,20
+	
+	Approach P, Side1,50					'set block
+	Move L, Side1, s=50
+	reset Grip
+	delay 200
+
+	Move P, Home							'return home
+
+End Sub

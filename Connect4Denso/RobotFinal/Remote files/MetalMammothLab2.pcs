@@ -1,0 +1,46 @@
+'!TITLE "Denso robot program"
+#Define Home P(324.2096,22.09197,264.8137,177.8233,1.64624,90.07153)
+#Define Start P[8]
+#Define Finish P[9]
+DefIO Gripper = BIT, 26
+
+Sub Main
+	TakeArm Keep = 0
+Reset Gripper
+move p, @p home
+approach P, Start, 50
+SPEED 50
+Move p,  Start
+Set Gripper
+Delay 500
+Depart p, 20
+
+approach P , Finish, 50
+SPEED 50
+Move p, Finish
+Reset Gripper
+Delay 500
+Depart p, 20
+
+Move p, @E Home
+Buzzer 2000
+
+approach p , Finish, 50
+SPEED 50
+Move p, Finish
+Set Gripper
+Delay 500
+Depart p, @E 20
+
+approach p,  Start, 50
+SPEED 50
+Move p, Start
+Reset Gripper
+Delay 500
+Depart p, @E 20
+
+Move p, @E Home
+Buzzer 2000
+
+HOLD "Operation Complaete! Run Again?"
+End Sub

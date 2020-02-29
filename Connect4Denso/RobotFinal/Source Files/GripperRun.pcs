@@ -1,0 +1,12 @@
+'!TITLE "Denso robot program"
+DEFIO gripper = Bit , 26
+Sub Main
+	TakeArm Keep = 0
+	do
+		Set Gripper
+		delay 1000
+		reset Gripper
+		delay 2000
+	loop
+	
+End Sub

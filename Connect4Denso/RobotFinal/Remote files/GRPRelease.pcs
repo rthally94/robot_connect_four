@@ -1,0 +1,6 @@
+'!TITLE "Denso robot program"
+DefIO Gripper = BIT, 26
+Sub Main
+	delay 625
+	reset Gripper
+End Sub

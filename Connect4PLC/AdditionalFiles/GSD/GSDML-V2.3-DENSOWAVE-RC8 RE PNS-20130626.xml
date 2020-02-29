@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<ISO15745Profile xmlns="http://www.profibus.com/GSDML/2003/11/DeviceProfile" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.profibus.com/GSDML/2003/11/DeviceProfile ..\xsd\GSDML-DeviceProfile-V2.3.xsd">
+  <ProfileHeader>
+    <ProfileIdentification>PROFINET Device Profile</ProfileIdentification>
+    <ProfileRevision>1.00</ProfileRevision>
+    <ProfileName>Device Profile for PROFINET Devices</ProfileName>
+    <ProfileSource>PROFIBUS Nutzerorganisation e. V. (PNO)</ProfileSource>
+    <ProfileClassID>Device</ProfileClassID>
+    <ISO15745Reference>
+      <ISO15745Part>4</ISO15745Part>
+      <ISO15745Edition>1</ISO15745Edition>
+      <ProfileTechnology>GSDML</ProfileTechnology>
+    </ISO15745Reference>
+  </ProfileHeader>
+  <ProfileBody>
+    <DeviceIdentity DeviceID="0x0801" VendorID="0x0260">
+      <InfoText TextId="DeviceDescription_InfoText" />
+      <VendorName Value="DENSO WAVE INCORPORATED" />
+    </DeviceIdentity>
+    <DeviceFunction>
+      <Family MainFamily="I/O" ProductFamily="PNS" />
+    </DeviceFunction>
+    <ApplicationProcess>
+      <DeviceAccessPointList>
+        <DeviceAccessPointItem AddressAssignment="DCP;LOCAL" DNS_CompatibleName="rc8pns" FixedInSlots="0" ID="DIM 1" ImplementationType="netX" MinDeviceInterval="32" ModuleIdentNumber="0x00000001" NameOfStationNotTransferable="true" ObjectUUID_LocalIndex="1" PhysicalSlots="0..255" DeviceAccessSupported="true" PNIO_Version="V2.2">
+          <ModuleInfo>
+            <Name TextId="rc8pns" />
+            <InfoText TextId="DIM 1_InfoText" />
+            <VendorName Value="DENSO WAVE INCORPORATED" />
+            <OrderNumber Value="RC8" />
+            <HardwareRelease Value="2" />
+            <SoftwareRelease Value="1.0.0" />
+          </ModuleInfo>
+          <SubslotList>
+            <SubslotItem SubslotNumber="32768" TextId="X1" />
+            <SubslotItem SubslotNumber="32769" TextId="X1P1" />
+            <SubslotItem SubslotNumber="32770" TextId="X1P2" />
+          </SubslotList>
+          <IOConfigData MaxInputLength="1024" MaxOutputLength="1024" />
+          <UseableModules>
+            <ModuleItemRef AllowedInSlots="1..255" ModuleItemTarget="32byteinput" />
+            <ModuleItemRef AllowedInSlots="1..255" ModuleItemTarget="256byteinput" />
+            <ModuleItemRef AllowedInSlots="1..255" ModuleItemTarget="32byteoutput" />
+            <ModuleItemRef AllowedInSlots="1..255" ModuleItemTarget="256byteoutput" />
+          </UseableModules>
+          <VirtualSubmoduleList>
+            <VirtualSubmoduleItem ID="DIM 1" SubmoduleIdentNumber="0x00001100">
+              <IOData IOCS_Length="1" IOPS_Length="1" />
+              <ModuleInfo CategoryRef="DAP Module">
+                <Name TextId="rc8pns" />
+                <InfoText TextId="DIM 1_InfoText" />
+              </ModuleInfo>
+            </VirtualSubmoduleItem>
+          </VirtualSubmoduleList>
+          <SystemDefinedSubmoduleList>
+            <InterfaceSubmoduleItem ID="IDS_1I" NetworkComponentDiagnosisSupported="true" SubmoduleIdentNumber="0x00001101" SubslotNumber="32768" SupportedMibs="MIB2" SupportedProtocols="SNMP;LLDP" SupportedRT_Classes="RT_CLASS_1" TextId="PN-IO">
+              <ApplicationRelations>
+                <TimingProperties ReductionRatio="1 2 4 8 16 32 64 128 256 512" SendClock="32 64 128" />
+              </ApplicationRelations>
+            </InterfaceSubmoduleItem>
+            <PortSubmoduleItem ID="IDS_1P1" LinkStateDiagnosisCapability="Up+Down" MAUTypes="16" SubmoduleIdentNumber="0x00001102" SubslotNumber="32769" TextId="Port1" />
+            <PortSubmoduleItem ID="IDS_1P2" LinkStateDiagnosisCapability="Up+Down" MAUTypes="16" SubmoduleIdentNumber="0x00001103" SubslotNumber="32770" TextId="Port2" />
+          </SystemDefinedSubmoduleList>
+        </DeviceAccessPointItem>
+      </DeviceAccessPointList>
+      <ModuleList>
+        <ModuleItem ID="32byteinput" ModuleIdentNumber="0x00000012">
+          <ModuleInfo CategoryRef="Input Module">
+            <Name TextId="Module_32byteinput_Name" />
+            <InfoText TextId="Module_32byteinput_InfoText" />
+          </ModuleInfo>
+          <VirtualSubmoduleList>
+            <VirtualSubmoduleItem ID="32byteinput" SubmoduleIdentNumber="0x00000011">
+              <IOData>
+                <Input>
+                  <DataItem DataType="OctetString" Length="32" TextId="DataItem_32byteinput_inputdata_0_Name" />
+                </Input>
+              </IOData>
+              <ModuleInfo>
+                <Name TextId="Submodule_32byteinput_Name" />
+                <InfoText TextId="Submodule_32byteinput_InfoText" />
+              </ModuleInfo>
+            </VirtualSubmoduleItem>
+          </VirtualSubmoduleList>
+        </ModuleItem>
+        <ModuleItem ID="256byteinput" ModuleIdentNumber="0x0000001C">
+          <ModuleInfo CategoryRef="Input Module">
+            <Name TextId="Module_256byteinput_Name" />
+            <InfoText TextId="Module_256byteinput_InfoText" />
+          </ModuleInfo>
+          <VirtualSubmoduleList>
+            <VirtualSubmoduleItem ID="256byteinput" SubmoduleIdentNumber="0x0000001B">
+              <IOData>
+                <Input>
+                  <DataItem DataType="OctetString" Length="256" TextId="DataItem_256byteinput_inputdata_0_Name" />
+                </Input>
+              </IOData>
+              <ModuleInfo>
+                <Name TextId="Submodule_256byteinput_Name" />
+                <InfoText TextId="Submodule_256byteinput_InfoText" />
+              </ModuleInfo>
+            </VirtualSubmoduleItem>
+          </VirtualSubmoduleList>
+        </ModuleItem>
+        <ModuleItem ID="32byteoutput" ModuleIdentNumber="0x00000013">
+          <ModuleInfo CategoryRef="Output Module">
+            <Name TextId="Module_32byteoutput_Name" />
+            <InfoText TextId="Module_32byteoutput_InfoText" />
+          </ModuleInfo>
+          <VirtualSubmoduleList>
+            <VirtualSubmoduleItem ID="32byteoutput" SubmoduleIdentNumber="0x00000012">
+              <IOData>
+                <Output>
+                  <DataItem DataType="OctetString" Length="32" TextId="DataItem_32byteoutput_outputdata_0_Name" />
+                </Output>
+              </IOData>
+              <ModuleInfo>
+                <Name TextId="Submodule_32byteoutput_Name" />
+                <InfoText TextId="Submodule_32byteoutput_InfoText" />
+              </ModuleInfo>
+            </VirtualSubmoduleItem>
+          </VirtualSubmoduleList>
+        </ModuleItem>
+        <ModuleItem ID="256byteoutput" ModuleIdentNumber="0x0000001D">
+          <ModuleInfo CategoryRef="Output Module">
+            <Name TextId="Module_256byteoutput_Name" />
+            <InfoText TextId="Module_256byteoutput_InfoText" />
+          </ModuleInfo>
+          <VirtualSubmoduleList>
+            <VirtualSubmoduleItem ID="256byteoutput" SubmoduleIdentNumber="0x0000001C">
+              <IOData>
+                <Output>
+                  <DataItem DataType="OctetString" Length="256" TextId="DataItem_256byteoutput_outputdata_0_Name" />
+                </Output>
+              </IOData>
+              <ModuleInfo>
+                <Name TextId="Submodule_256byteoutput_Name" />
+                <InfoText TextId="Submodule_256byteoutput_InfoText" />
+              </ModuleInfo>
+            </VirtualSubmoduleItem>
+          </VirtualSubmoduleList>
+        </ModuleItem>
+      </ModuleList>
+      <CategoryList>
+        <CategoryItem ID="DAP Module" TextId="DAP Module_CategoryName" />
+        <CategoryItem ID="Input Module" TextId="Input Module_CategoryName" />
+        <CategoryItem ID="Output Module" TextId="Output Module_CategoryName" />
+      </CategoryList>
+      <ExternalTextList>
+        <PrimaryLanguage>
+          <Text TextId="rc8pns" Value="rc8pns" />
+          <Text TextId="DAP Module_CategoryName" Value="Device Access Point Modules" />
+          <Text TextId="DIM 1_InfoText" Value="Firmware version V3.1.x. Supports RT Communication." />
+          <Text TextId="DataItem_256byteinput_inputdata_0_Name" Value="Inputs" />
+          <Text TextId="DataItem_256byteoutput_outputdata_0_Name" Value="Outputs" />
+          <Text TextId="DataItem_32byteinput_inputdata_0_Name" Value="Inputs" />
+          <Text TextId="DataItem_32byteoutput_outputdata_0_Name" Value="Outputs" />
+          <Text TextId="DeviceDescription_InfoText" Value="DENSO WAVE RobotController RC8." />
+          <Text TextId="Input Module_CategoryName" Value="Input Modules" />
+          <Text TextId="Module_256byteinput_InfoText" Value="256 Bytes Input Module" />
+          <Text TextId="Module_256byteinput_Name" Value="256 Bytes Input" />
+          <Text TextId="Module_256byteoutput_InfoText" Value="256 Bytes Output Module" />
+          <Text TextId="Module_256byteoutput_Name" Value="256 Byte Output" />
+          <Text TextId="Module_32byteinput_InfoText" Value="32 Bytes Input Module" />
+          <Text TextId="Module_32byteinput_Name" Value="32 Bytes Input" />
+          <Text TextId="Module_32byteoutput_InfoText" Value="32 Bytes Output Module" />
+          <Text TextId="Module_32byteoutput_Name" Value="32 Bytes Output" />
+          <Text TextId="Output Module_CategoryName" Value="Output Modules" />
+          <Text TextId="PN-IO" Value="PN-IO" />
+          <Text TextId="Port1" Value="Port 1" />
+          <Text TextId="Port2" Value="Port 2" />
+          <Text TextId="Submodule_256byteinput_InfoText" Value="256 Bytes Input Submodule" />
+          <Text TextId="Submodule_256byteinput_Name" Value="256 Bytes Input" />
+          <Text TextId="Submodule_256byteoutput_InfoText" Value="256 Bytes Output Submodule" />
+          <Text TextId="Submodule_256byteoutput_Name" Value="256 Bytes Output" />
+          <Text TextId="Submodule_32byteinput_InfoText" Value="32 Bytes Input Submodule" />
+          <Text TextId="Submodule_32byteinput_Name" Value="32 Bytes Input" />
+          <Text TextId="Submodule_32byteoutput_InfoText" Value="32 Bytes Output Submodule" />
+          <Text TextId="Submodule_32byteoutput_Name" Value="32 Bytes Output" />
+          <Text TextId="X1" Value="X1" />
+          <Text TextId="X1P1" Value="X1 P1" />
+          <Text TextId="X1P2" Value="X1 P2" />
+        </PrimaryLanguage>
+      </ExternalTextList>
+    </ApplicationProcess>
+  </ProfileBody>
+</ISO15745Profile>

@@ -1,0 +1,43 @@
+'!TITLE "Denso robot program"
+
+#Define APPR_LEN 100
+DefIO Gripper = Bit, 26
+DefIO InBox = Bit, 25
+
+Dim SafetyZone As Vector
+Dim WorkVect As Vector
+
+Sub Main
+	Setup
+
+	WorkVect = V( 0, -PosY(SafetyZone), 0)
+	Call DoWeld(Dev(p30, P(0,0,0,0,20,0,-1)) , WorkVect)
+End Sub
+
+Sub Setup()
+	TakeArm Keep = 0
+	Speed 100
+	ChangeTool 2
+	SafetyZone = AreaSize(0)
+	If(InBox == 1) Then
+		Resetarea 0
+		Depart L, 75
+		Reset InBox
+	End If
+
+	MOVE P, @P P1
+End Sub
+
+Sub DoWeld(pt1 As Position, length As vector)
+	MOVE P, @P P1
+	Setarea 0
+	Call Weld(pt1, length)
+	Resetarea 0
+	Reset InBox
+	MOVE P, @P P1
+End Sub
+
+Sub Weld(pt As Position, length As Vector)
+	Move P, pt
+	Draw L, length
+End Sub

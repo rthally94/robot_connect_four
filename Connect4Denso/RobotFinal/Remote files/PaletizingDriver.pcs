@@ -1,0 +1,133 @@
+'!TITLE "Palletizing Template"
+
+#Define HOME J(0, 0, 90, 0, 0, 0)
+#Define TotalLayers 2
+#Define PartsPerLayer 9
+#Define ApprachSpeed 40
+
+'#Define PLT_ROWS 3 ' Number of side partitions
+'#Define PLT_COLS 3 ' Number of lengthwise partitions
+'#Define PLT_HEIGHT 20 ' Pallet height
+'#Define PLT_APR_LEN 35 ' Approach length
+'#Define PLT_DEP_LEN 30 ' Depart length
+'#Define PLT_LAYER 2 ' Number of layers
+
+Dim PLT_ROWS As Integer = 3 ' Number of side partitions
+Dim PLT_COLS As Integer = 3 ' Number of lengthwise partitions
+Dim PLT_HEIGHT As Single = 10 ' Pallet height
+Dim PLT_APR_LEN As Integer = 35 ' Approach length
+Dim PLT_DEP_LEN As Integer = 30 ' Depart length
+Dim PLT_LAYER As Integer = 3 ' Number of layers
+
+
+
+'           COLS
+'      P[22]------P[23]
+' ROWS /            / |
+'   P[20]-------P[21]|
+'   |            | /
+'    -------------/
+
+
+
+Dim PLT_POS As Position = P(0,0,0,0,0,0)
+Dim PLT_LAYER_COUNTER As Integer = 1
+Dim PLT_COUNTER As Integer = 1
+Sub Main()
+	Setup
+	
+	Dim index As Integer
+	For index = 1 To TotalLayers * PartsPerLayer Step 1
+	GetNextPiece
+	Paletize
+
+	If IO[9] = OFF Then
+		WaitForNextPart
+	End If
+	Next
+
+	'ReturnParts
+
+End Sub
+
+Sub Setup()
+	TakeArm Keep = 0
+	Speed 100
+	Tool 1, P(0, 0, 149, 0, 0, 0)
+	ChangeTool 1
+	Reset IO26
+	WaitForNextPart 
+End Sub
+
+Sub WaitForNextPart()
+	Move P, HOME
+	Wait IO[9] = ON
+	Delay(500)
+	Buzzer(500)
+	Delay(500)
+	Buzzer(500)
+	Delay(500)
+End Sub
+
+Sub GetNextPiece()
+	Approach P, P19, @P PLT_APR_LEN
+	Move L, P19, S = ApprachSpeed
+	SET IO26
+	Delay 250
+	Depart L, PLT_DEP_LEN, S = ApprachSpeed
+End Sub
+
+Sub ReturnParts()
+	Approach P, P24, PLT_APR_LEN
+	Move L, P24, S = 15
+	Set IO26
+	Delay 100
+	Depart L, PLT_DEP_LEN, S = 15
+	
+	Approach P, P25, @P PLT_APR_LEN, S = 40
+	Move L, P25, S = 40
+
+	Move L, P26, S = 5
+	Move L, P25, S = 5
+	
+	Depart P, @P PLT_DEP_LEN,  S = 40
+	Approach P, P24, @P PLT_APR_LEN
+	Move L, P24, S = 5
+	Reset IO26
+	Delay 100
+	Depart L, PLT_DEP_LEN, S = 15
+	
+	WaitForNextPart
+End Sub
+
+Sub Paletize()
+
+	'Obtain the destination to P[24]
+	'PLT_POS = Pallet.CalcPos(PLT_ROWS, PLT_COLS, PLT_HEIGHT, P20, P21, P22, P23, PLT_COUNTER, PLT_LAYER_COUNTER )
+	PLT_POS = Pallet.CalcPos(PLT_ROWS, PLT_COLS, PLT_HEIGHT, P20, P21, P22, P23, PLT_COUNTER, PLT_LAYER_COUNTER )
+	'------- Palletizing -------------------------
+	Approach P, PLT_POS, @P PLT_APR_LEN, S = 100                                                                                                'Approach at a height of 50mm of P[24]
+	
+	' --- Wait IO ---
+	
+	Move L, PLT_POS, S = ApprachSpeed                                                                                                                 ' Move to P[19]
+	
+	' --- Chuck or UnChuck ---
+	RESET IO26	
+
+	Depart L, PLT_DEP_LEN, S = ApprachSpeed                                                                                                                 ' Deaprt at a height of 50mm
+	
+	' --- Move the robot ---
+	
+	'------- Increase the counters --------------
+	PLT_COUNTER = PLT_COUNTER + 1                                                                                                            ' Increase the palletizing counter
+	If PLT_COUNTER > (PLT_ROWS * PLT_COLS) Then                                                                                                 ' If complete a layer(Row1 * Col1)...
+		PLT_COUNTER = 1                                                                                                                         ' Initialize the palletizing counter
+		
+		PLT_LAYER_COUNTER = PLT_LAYER_COUNTER + 1                                                                                            ' Increase the counter of the layer
+		If PLT_LAYER_COUNTER > PLT_LAYER Then                                                                                                   ' If complete all layers
+			PLT_LAYER_COUNTER = 1                                                                                                               ' Initialize the counter of the layer
+		End If
+	End If
+
+End Sub

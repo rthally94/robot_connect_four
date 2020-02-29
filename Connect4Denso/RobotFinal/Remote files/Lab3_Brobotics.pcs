@@ -1,0 +1,54 @@
+'!TITLE "Brobotics Lab 3"
+#Define Home P[30]
+#Define Pick P[32]
+#Define Place P[31]
+Defio Gripper = BIT, 26
+Sub Main
+	
+	'Start Home
+	TakeArm Keep = 0
+	Buzzer 2000
+	Move p, Home
+	Reset Gripper
+ 
+ 	' Pick up block
+ 	Approach p, Pick, 50
+	Move L, Pick, s=50
+	Set Gripper
+	Delay 300							'Delay for 3/10th of a second
+	Depart p, 20
+	
+	'Place block
+	Approach p, Place, 50
+	Move L, Place, s=50
+	Reset Gripper
+	Delay 300
+	Depart p, 20
+
+	'Go Home
+	Move p, Home
+ 
+ 	' Pick up block
+ 	Approach p, Place, 50
+	Move L, Place, s=50
+	Set Gripper
+	Delay 300							'Delay for 3/10th of a second
+	Depart p, 20
+	
+	'Place block
+	Approach p, Pick, 50
+	Move L, Pick, s=50
+	Reset Gripper
+	Delay 300
+	Depart p, 20
+
+	'Go Home
+	Move p, Home
+	
+	
+	Hold "Operation complete! Run again?"
+
+
+
+	
+End Sub

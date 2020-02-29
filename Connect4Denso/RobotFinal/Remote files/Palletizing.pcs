@@ -1,0 +1,139 @@
+'!TITLE "Palletizing2"
+
+	#Define Home P(311.49,89.32,280.88,177.02,4.1,-127.9,5)
+	#Define Pick P(245.7753 + (Offset*Counter),-161.046,26.09435,-176.8553,1.441769,-5.185962,5)
+	
+	DefIO Grip = BIT, 26
+	Dim Offset as integer = 40
+	Dim Counter as integer = 0
+
+Sub Main
+	TakeArm Keep = 0
+	
+
+			'Stacking Begin
+
+	'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+	Move P, Home						
+	reset Grip
+
+	ChangeWork 1						'work change
+
+	Approach P, Pick, 50					'get block
+	Move L, Pick, s=50
+	set Grip
+	delay 200
+	Depart L, 20
+	
+	ChangeWork 2						'work change
+
+	Approach P, Pick,50					'set block
+	Move L, Pick, s=50
+	reset Grip
+	delay 200
+	Depart L, 20
+
+	Move P, Home							'return home
+	Counter = Counter + 1					'Counter +1
+	
+	ChangeWork 1						'work change
+											
+	Approach P, Pick, 50					'get block
+	Move L, Pick, s=50
+	set Grip
+	delay 200
+	Depart L, 20
+	
+	ChangeWork 2						'work change
+
+	Approach P, Pick,50					'set block
+	Move L, Pick, s=50
+	reset Grip
+	delay 200
+	Depart L, 20
+
+	Move P, Home							'return home
+	Counter = Counter + 1					'Counter +1
+
+	ChangeWork 1						'work change
+
+	Approach P, Pick, 50					'get block
+	Move L, Pick, s=50
+	set Grip
+	delay 200
+	Depart L, 20
+	
+	ChangeWork 2						'work change
+
+	Approach P, Pick,50					'set block
+	Move L, Pick, s=50
+	reset Grip
+	delay 200
+	Depart L, 20
+
+	Move P, Home							'return home
+
+	'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+		Move P, Home						
+	reset Grip
+
+	ChangeWork 1						'work change
+
+	Approach P, Pick, 50					'get block
+	Move L, Pick, s=50
+	set Grip
+	delay 200
+	Depart L, 20
+	
+	ChangeWork 3						'work change
+
+	Approach P, Pick,50					'set block
+	Move L, Pick, s=50
+	reset Grip
+	delay 200
+	Depart L, 20
+
+	Move P, Home							'return home
+	Counter = Counter + 1					'Counter +1
+	
+	ChangeWork 1						'work change
+											
+	Approach P, Pick, 50					'get block
+	Move L, Pick, s=50
+	set Grip
+	delay 200
+	Depart L, 20
+	
+	ChangeWork 3						'work change
+
+	Approach P, Pick,50					'set block
+	Move L, Pick, s=50
+	reset Grip
+	delay 200
+	Depart L, 20
+
+	Move P, Home							'return home
+	Counter = Counter + 1					'Counter +1
+
+	ChangeWork 1						'work change
+
+	Approach P, Pick, 50					'get block
+	Move L, Pick, s=50
+	set Grip
+	delay 200
+	Depart L, 20
+	
+	ChangeWork 3						'work change
+
+	Approach P, Pick,50					'set block
+	Move L, Pick, s=50
+	reset Grip
+	delay 200
+	Depart L, 20
+
+	Move P, Home							'return home
+
+					
+End Sub

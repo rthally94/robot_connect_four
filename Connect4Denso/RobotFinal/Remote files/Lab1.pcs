@@ -1,0 +1,16 @@
+'!TITLE "Denso robot program"
+
+Sub Main
+	TakeArm Keep = 0
+	Move p,p0
+	Move p,p1
+	Draw p,(0,0,-75)
+	Move p,p1
+	
+	Move p,p3
+	Draw p,(0,0,-70)
+	Move p,p3
+
+		
+
+End Sub

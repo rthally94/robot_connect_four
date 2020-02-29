@@ -1,0 +1,13 @@
+'!TITLE "Brobotics EXP#1 robot program"
+
+Sub Main
+	TakeArm Keep = 0
+	Speed 75
+	Move P, P3
+	Draw L, (0,0,-20)
+	Move P, P3
+	Move P, P4
+	Draw L, (0,0,-20)
+	Move P, P4
+
+End Sub

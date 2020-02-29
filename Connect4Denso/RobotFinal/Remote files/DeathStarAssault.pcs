@@ -1,0 +1,245 @@
+'!TITLE "Death Star Assault"
+	#Include <GRPRelease.pcs>
+	#Define Home P(172.525,-4.8583,489.9543,-179.3723,0.3336524,85.74841,5)				'set correctly
+	#Define Pick P(-0.0083+ OffsetX, 0.00535 + OffsetY, -0.0068 + OffsetZ, -177.96 + OffsetRX, 2.4744 + OffsetRY, -3.918 + OffsetRZ,5) 'set correctly
+	
+	DefIO Grip = BIT, 26
+	DefIO Optical = BIT,14
+	DefIO Add = BIT, 10
+	DefIO Subtract = BIT, 15
+	DefIO Launch = BIT, 12
+	DefIO Trip = BIT, 9
+
+
+	Dim OffsetX as integer = 0
+	Dim OffsetY as integer = 0
+	Dim OffsetZ as integer = 0
+	Dim OffsetRX as integer = 0
+	Dim OffsetRY as integer = 0
+	Dim OffsetRZ as integer = 0
+
+	Dim CounterTorpedo as integer = 3
+Sub Main
+	TakeArm Keep = 0
+	
+
+			'Start Program
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+	Move P, Home						'start at home						
+	reset Grip
+	Move C, P13, P14
+
+	Tool 1, P(0,0,125,0,0,0)			'set tool
+
+	Changetool 1						'activate tool offset
+	
+	Call Game
+
+End Sub
+
+			'Begin Game
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+	Sub Game()										'Actual Gameplay
+	Do Until (CounterTorpedo = 0 or Optical = 0)
+		
+		If CounterTorpedo < 3 Then					'Safety Arc
+		ChangeWork 0
+		Move C, P15, P16, s=70
+
+		Else										'Dummy Option
+		
+
+		End If
+		ChangeWork CounterTorpedo
+
+		Approach P, Pick, 70					'Grab Torpedo
+		Move L, Pick, S=50
+		set Grip
+		Delay 200
+		Depart L, 50
+
+		Changework 4
+
+		Move P, Pick							'Move to playzone
+
+	Do Until Launch = 0							'Line up attack run
+			Do While (Add = 0)
+
+			Draw L, (-10,0,0)
+
+			Loop
+
+			Do While (Subtract = 0)
+			
+			Draw L, (10,0,0)
+		
+			Loop
+		delay 250
+	Loop
+
+	Run GRPRelease							'Run 2nd program
+		
+		Draw L, (0, 415, 0)					'Fire
+
+		CounterTorpedo = CounterTorpedo - 1	'Subtract torpedo
+		
+		OffsetX = 0
+		OffsetY = 0
+		
+		Delay 1500 							'Check conditions before running loop
+	Loop	
+		
+		If Optical = 0 Then					'Win
+		Call Success
+		
+		ElseIf Optical = 1 Then				'Lose
+		Call Failure		
+			
+		End If
+kill GRPrelease								'Kill program 2
+	End Sub
+
+			'Losing logic
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+		
+	Sub Failure ()							'You Lost
+
+	Buzzer 100
+	Delay 100
+	Buzzer 100
+	Delay 100
+	Buzzer 300
+	Delay 100
+	Buzzer 100		'F
+	Delay 200
+
+	Buzzer 100
+	Delay 100
+	Buzzer 300		'A
+	Delay 200
+
+	Buzzer 100
+	Delay 100
+	Buzzer 100		'I
+	Delay 200
+
+	Buzzer 100
+	Delay 100
+	Buzzer 300
+	Delay 100
+	Buzzer 100
+	Delay 100
+	Buzzer 100		'L
+	Delay 200
+
+	Buzzer 100
+	Delay 100
+	Buzzer 100
+	Delay 100
+	Buzzer 300		'U
+	Delay 200
+
+	Buzzer 100
+	Delay 100
+	Buzzer 300
+	Delay 100
+	Buzzer 100		'R
+	Delay 200
+
+	Buzzer 100		'E
+
+
+	PRINTMSG "You have failed Rebel Scum! Try again if you dare by pressing 'LAUNCH'"	'Play again sub
+	Wait Launch = 0, 100000000000
+
+	CounterTorpedo = 3
+	
+	ChangeWork 0
+	ChangeTool 0
+
+	Move P, Home						'start at home						
+	reset Grip
+	Move C, P13, P14
+
+	Tool 1, P(0,0,125,0,0,0)			'set tool
+
+	Changetool 1						'activate tool offset
+	
+	Call Game
+	End Sub
+
+			'Winning logic
+'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+	Sub Success ()						'You Won
+
+	Buzzer 100
+	Delay 100
+	Buzzer 100
+	Delay 100
+	Buzzer 100
+	Delay 100
+	Buzzer 300		'V
+	Delay 200	
+
+	Buzzer 100
+	Delay 100
+	Buzzer 100		'I
+	Delay 200
+
+	Buzzer 300
+	Delay 100
+	Buzzer 100
+	Delay 100
+	Buzzer 300
+	Delay 100
+	Buzzer 100		'C
+	Delay 200
+
+	Buzzer 300		'T
+	Delay 200
+
+	Buzzer 300
+	Delay 100
+	Buzzer 300
+	Delay 100
+	Buzzer 300		'O
+	Delay 200
+
+	Buzzer 100
+	Delay 100
+	Buzzer 300
+	Delay 100
+	Buzzer 100		'R
+	Delay 200
+
+	Buzzer 300
+	Delay 100
+	Buzzer 100
+	Buzzer 300
+	Delay 100
+	Buzzer 300		'Y
+	Delay 200
+
+
+
+	PRINTMSG "Great shot, kid. That was one-in-a-million! Bet ya can't do it again, try by pressing 'LAUNCH'"	'Play again sub
+	Wait (Launch = 0 and Optical = 1), 10000000000
+
+	CounterTorpedo = 3
+
+	ChangeWork 0
+	ChangeTool 0
+
+	Move P, Home						'start at home						
+	reset Grip
+	Move C, P13, P14
+
+	Tool 1, P(0,0,125,0,0,0)			'set tool
+
+	Changetool 1						'activate tool offset
+	
+	Call Game
+	End Sub

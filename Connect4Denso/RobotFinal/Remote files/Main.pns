@@ -1,0 +1,61 @@
+#include <PanelMain.h> raw
+
+#define RED &H0000ff
+#define GREEN &H00ff00
+
+Sub Panel_INITIALIZE()
+	Gripper.State = IO[26]
+	If IO26 == 0 Then
+		GrprStatus.Caption = "Status: OPEN"
+		GrprStatus.BG = GREEN
+	Else
+		GrprStatus.Caption = "Status: CLOSED"
+		GrprStatus.BG = RED
+	End If
+End Sub
+
+Sub Gripper_RELEASED()
+	If IO[26] == 1 Then
+		Reset IO[26]
+		Gripper.State = 0
+		GrprStatus.Caption = "Status: OPEN"
+		GrprStatus.BG = GREEN
+	Else
+		Set IO[26]
+		Gripper.State = 1
+		GrprStatus.Caption = "Status: CLOSED"
+		GrprStatus.BG = RED
+	End If
+End Sub
+
+
+
+Sub Timer1_TIMER()
+	PartDetectLight.State = IO[9]
+End Sub
+
+
+Sub PageCounter_CLICKED()
+	PageChange Counter
+End Sub
+#ifdef TP_DESIGNER
+'<<--TPDESIGNER_RESERVED-->>
+CAPTION=""
+BG=&H754E3A
+FG=&H000000
+TIMEOUT=2000
+TIMEOUTMODE=1
+RELEASEMODE=0
+PNLCCVER=232
+COLORTYPE=1
+FONTTYPE=1
+BORDERSTYLE=0
+CONTROLSORT=0
+add_widget 17,"Gripper",340,30,110,40,&H00FF00,&H000000,0,3,1,"Gripper",16,0,1,"Segoe UI";
+add_widget 2,"GrprStatus",320,80,150,30,&H000000,&HB0B0B0,0,1,0,"Status: CLOSED",14,0,"Segoe UI","",1,1;
+add_widget 3,"PartDetectLight",190,30,20,20,&H00FF00,&H000000,0,1,2,"",16,0,1,"Segoe UI";
+add_widget 8,"TB1",30,30,150,20,&H000000,&HB0B0B0,0,3,0,"TB1",16,0,"Part Detected:","Segoe UI";
+add_widget 15,"Timer1",610,340,0,1,500;
+add_widget 1,"PageCounter",20,310,90,40,&H000000,&HB0B0B0,0,3,1,"Counter",16,0,0,"Segoe UI","",1,1;
+'<<--TPDESIGNER_RESERVED-->>
+#endif

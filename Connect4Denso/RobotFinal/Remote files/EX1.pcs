@@ -1,0 +1,16 @@
+'!TITLE "EX1"
+
+Sub Main
+	TakeArm Keep = 0
+	
+'pick
+Move p, p1
+draw l, (0, 0, -20)
+Move p, p1
+
+'place
+Move p, p2
+Draw l, (0,0,-20)	
+Move p, p2
+
+End Sub

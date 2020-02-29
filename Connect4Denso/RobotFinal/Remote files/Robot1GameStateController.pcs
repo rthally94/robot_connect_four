@@ -1,0 +1,52 @@
+'!TITLE "Denso robot program"
+DEFIO runMode = Integer, 10, &B00000111
+DEFIO runStatus	= Bit, 25
+DIM currentMode As Integer
+Sub Main
+	TakeArm Keep = 0
+	Speed 10
+	do
+		currentMode = runMode
+		Delay 20
+			Select Case runMode
+				Case 0
+					
+				Case 1
+					GoHome
+					Reset runStatus
+					Delay 500
+				Case 2
+					
+				Case 3
+
+				Case 4
+					Call GoGame(P4)
+					Reset runStatus
+					Delay 500
+				Case 5
+					Call GoGame(P5)
+					Reset runStatus
+					Delay 500
+				Case 6
+					Call GoGame(P6)
+					Reset runStatus
+					Delay 500
+				Case 7
+					Call GoGame(P7)
+					Reset runStatus
+					Delay 500
+			End Select
+	loop
+End Sub
+
+Sub GoHome
+	SET runStatus
+	Move P, @P P1
+End Sub
+
+Sub GoGame(ByVal loc As Position)
+	SET runStatus
+	Move P, @P loc
+	Delay 5000
+	GoHome
+End Sub

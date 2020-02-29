@@ -1,0 +1,32 @@
+'!TITLE "Denso robot program"
+
+defIO Gripper = bit, 26
+
+Sub Main
+
+	TakeArm Keep = 0
+	Reset Gripper	'Resetting Pnuematic Gripper
+	Move P, P0		'Home position
+	Approach P, P1, 150	'Go to pick up block position
+	
+	Move P, P1		'Move to the actual pickup position
+	Set Gripper		'Grab Block
+	Depart L, 150	
+	
+	Approach P, P2, 150			
+	Move P, P2
+	Reset Gripper
+	Depart L, 150
+	Move P, P0		'LUKE GO HOME
+	
+	Approach P, P2, 150
+	Move P, P2
+	Set Gripper
+	Depart L, 150
+
+	Approach P, P1, 150
+	Move P, P1
+	Reset Gripper
+
+	
+End Sub

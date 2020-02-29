@@ -1,0 +1,46 @@
+'!TITLE "Denso robot program"
+
+
+#Define APPR_LEN 100
+DefIO Gripper = Bit, 26
+
+Sub Main
+	Setup
+	Call PickPlace(P19, P20)
+	Call PickPlace(P20, P19)
+End Sub
+
+Sub Setup()
+	TakeArm Keep = 0
+	Speed 100
+	Tool 1, P(0, 0, 149, 0, 0, 0)
+	ChangeTool 1 
+End Sub
+
+Sub PickPlace(pt1 AS Position, pt2 AS Position)
+	MOVE P, @P P1
+	Call Pick(pt1)
+	Call Place(pt2)
+	MOVE P, @P P1
+End Sub
+
+Sub Pick(pt AS Position)
+	RESET Gripper
+	Approach P, pt, @P APPR_LEN
+	Move P, pt
+
+	SET Gripper
+	Delay(100)
+
+	Depart P, @P APPR_LEN
+End Sub
+
+Sub Place(pt As Position)
+	Approach P, pt, @P APPR_LEN
+	Move P, pt
+
+	RESET Gripper
+	Delay(100)
+
+	Depart P, @P APPR_LEN
+End Sub

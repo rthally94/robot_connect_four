@@ -1,0 +1,11 @@
+'!TITLE "Denso robot program"
+
+Sub Main
+	CollisionDetection True,1
+	TakeArm Keep = 0
+	Speed 50	
+
+	MOVE P, P5
+	MOVE P, P6
+	
+End Sub

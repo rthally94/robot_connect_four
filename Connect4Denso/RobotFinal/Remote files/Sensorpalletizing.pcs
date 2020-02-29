@@ -1,0 +1,231 @@
+'!TITLE "Sensorpalletizing"
+
+	#Define Home P(172.525,-4.8583,489.9543,-179.3723,0.3336524,85.74841,5)				'set correctly
+	#Define Pick P(0.0006+ OffsetX, 0.0003 + OffsetY, -0.003 + OffsetZ, -178.63 + OffsetRX, 1.885 + OffsetRY, -93.91 + OffsetRZ,5) 'set correctly
+	
+	DefIO Grip = BIT, 26
+	DefIO Optical = BIT,14
+	DefIO Inductive = Bit, 10
+	DefIO Block = BIT, 12
+	DefIO Clear = BIT, 15
+
+	Dim OffsetX as integer = 0
+	Dim OffsetY as integer = 0
+	Dim OffsetZ as integer = 0
+	Dim OffsetRX as integer = 0
+	Dim OffsetRY as integer = 0
+	Dim OffsetRZ as integer = 0
+
+	Dim CounterWoodRectangle as integer = 0
+	Dim CounterWoodCube as integer = 0
+	Dim CounterMetalRectangle as integer = 0
+	Dim CounterMetalCylinder as integer = 0	
+
+Sub Main
+	TakeArm Keep = 0
+	
+
+			'Evaluate Object
+
+	'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+	Move P, Home						'start at home						
+	reset Grip
+
+	Tool 1, P(0,0,125,0,0,0)			'set tool
+
+	Changetool 1						'activate tool offset
+	
+
+	Do While (CounterWoodRectangle < 4 or CounterWoodCube < 4 or CounterMetalRectangle < 4 or CounterMetalCylinder < 4)
+		
+		ChangeWork 1
+
+		Approach P, Pick, 70					'approach object
+		Wait Block = 0, 1000000000
+		Call Decision 
+
+	If CounterWoodRectangle = 3 Then
+		Call WoodRectangleFull
+
+	ElseIf CounterMetalRectangle = 3 Then
+		Call MetalRectangleFull
+
+	ElseIf CounterMetalCylinder = 3 Then
+		Call MetalCylinderFull
+
+	ElseIf CounterWoodCube = 3 Then
+		Call WoodCubeFull
+
+	End If		
+		
+	Loop	
+					
+End Sub
+
+	Sub Decision()
+
+		If (Optical = 1 and Inductive = 1) Then 
+			Call MetalRectangle
+	
+		ElseIf (Optical = 1 and Inductive = 0) Then 
+			Call WoodRectangle
+	
+		ElseIf (Optical = 0 and Inductive = 1) Then 
+			Call MetalCylinder
+	
+		ElseIf (Optical = 0 and Inductive = 0) Then 
+			Call WoodCube
+		
+		End If	 
+
+	End Sub
+
+	Sub MetalRectangle()															'Metal Rectangle Sub
+
+			Move L, Pick, s=50					'go to bracket
+			set Grip							'grab it
+			delay 200							
+			Depart L, 75
+	
+			ChangeWork 5			
+
+			OffsetZ = 25.8 * CounterMetalRectangle
+
+			Approach P, Pick,100					'set block
+			Move L, Pick, s=50
+			reset Grip
+			delay 200
+			Depart L, 100
+
+			'Removed							'return home
+			CounterMetalRectangle = CounterMetalRectangle + 1					'Counter +1
+			OffsetZ = 0
+	End Sub
+
+	Sub WoodRectangle()																'Wood Rectangle Sub
+
+
+			Move L, Pick, s=50					'go to bracket
+			set Grip							'grab it
+			delay 200							
+			Depart L, 75
+	
+			ChangeWork 4
+
+			OffsetZ = 23.4 * CounterWoodRectangle
+
+			Approach P, Pick,100					'set block
+			Move L, Pick, s=50
+			reset Grip
+			delay 200
+			Depart L, 100
+
+			'Removed							'return home
+			CounterWoodRectangle = CounterWoodRectangle + 1					'Counter +1
+			OffsetZ = 0
+	End Sub
+
+	Sub MetalCylinder()																'Metal Cylinder Sub
+
+	
+
+			OffsetX = -21.8
+			OffsetY = 0.584
+
+		
+
+			Move L, Pick, s=50					'go to bracket
+			set Grip							'grab it
+			delay 200							
+			Depart L, 75
+
+			ChangeWork 3
+			OffsetX = 0
+			OffsetY = 0
+			OffsetZ = 25.7 * CounterMetalCylinder
+
+			Approach P, Pick,100					'set block
+			Move L, Pick, s=50
+			reset Grip
+			delay 200
+			Depart L, 100
+
+			'Removed							'return home
+			CounterMetalCylinder = CounterMetalCylinder + 1					'Counter +1
+			OffsetZ = 0
+	End Sub
+
+	Sub WoodCube()																	'Wood Cube Sub
+
+	
+			OffsetX = -18.47
+			OffsetY = -2.96
+			OffsetZ = -0.11
+			OffsetRY = 1.91
+	
+			Move L, Pick, s=50					'go to bracket
+			set Grip							'grab it
+			delay 200							
+			Depart L, 75
+
+			ChangeWork 2
+
+			OffsetX = 0
+			OffsetY = 0
+			OffsetZ = 0
+			OffsetRY =0
+			OffsetZ = 23.5 * CounterWoodCube
+
+
+			Approach P, Pick,100				'set block
+			Move L, Pick, s=50
+			reset Grip
+			delay 200
+			Depart L, 100
+
+			'Removed							'return home
+			CounterWoodCube = CounterWoodCube + 1					'Counter +1
+			OffsetZ = 0
+
+	End Sub
+
+	Sub WoodRectangleFull ()
+
+	Buzzer 5000
+	PRINTMSG "Stack Wood Rectangle is full, process on hold until stack is cleared!"
+	Wait Clear = 0, 100000000
+
+	CounterWoodRectangle = 0
+
+	End Sub
+
+	Sub MetalRectangleFull ()
+
+	Buzzer 5000
+	PRINTMSG "Stack Metal Rectangle is full, process on hold until stack is cleared!"
+	Wait Clear = 0, 100000000
+
+	CounterMetalRectangle = 0
+
+	End Sub
+
+	Sub WoodCubeFull ()
+
+	Buzzer 5000
+	PRINTMSG "Stack Wood Cube is full, process on hold until stack is cleared!"
+	Wait Clear = 0, 100000000
+
+	CounterWoodCube = 0
+
+	End Sub
+
+	Sub MetalCylinderFull ()
+
+	Buzzer 5000
+	PRINTMSG "Stack Metal Cylinder is full, process on hold until stack is cleared!"
+	Wait Clear = 0, 100000000
+
+	CounterMetalCylinder = 0
+
+	End Sub
