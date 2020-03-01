@@ -1,4 +1,4 @@
-import S71200
+import S71200       # S71200 Library
 from time import sleep
 from time import time
 import snap7
