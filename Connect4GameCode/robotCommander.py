@@ -1,8 +1,9 @@
-import S71200       # S71200 Library
+import S71200               # S71200 Library
+import snap7                # Snap7 Library
+from snap7.util import *
+
 from time import sleep
 from time import time
-import snap7
-from snap7.util import *
 import struct
 from game import game
 from game import difficulty
